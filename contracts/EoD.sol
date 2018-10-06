@@ -1,18 +1,21 @@
 pragma solidity ^0.4.23;
 
-import { UniqueAddressQueue } from './queue.sol';
-import { Registrator } from './registrator.sol';
+
+import { UsersPool } from './UsersPool.sol';
+import { Registrator } from './Registration.sol';
 
 
 contract EoD {
+
     Registrator registrator = new Registrator();
-    UniqueAddressQueue queue = new UniqueAddressQueue();
+    UsersPool pool = new UsersPool();
     
-    function registration_in_platform() public {
-        registrator.registr(msg.sender);
+    function registrate() public {
+        registrator.registrate(msg.sender);
     }
     
-    function push_in_queue() public {
-        queue.push(msg.sender);
+    function find_game() public {
+        pool.push(msg.sender);
     }
+
 }
