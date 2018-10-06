@@ -5,6 +5,7 @@ const POTENTIAL_ROOM = 1;
 const ROOM = 2;
 const WALL = 3;
 const PORTAL = 4;
+const TREASURE = 5;
 
 const D8_X = [1, 1, 0, -1, -1, -1, 0, 1];
 const D8_Y = [0, -1, -1, -1, 0, 1, 1, 1];
@@ -88,7 +89,7 @@ while (true) {
 		stepIndex++;
 		q = nextQ;
 		nextQ = [];
-		prevQ = []; 
+		prevQ = [];
 	}
 	const { x, y } = q.pop();
 	prevQ.push({ x, y });
@@ -105,12 +106,28 @@ while (true) {
 
 map[mainPortalPos.x][mainPortalPos.y] = PORTAL;
 
+const rooms = [];
+for (let x = 0; x < WIDTH; x++) {
+	for (let y = 0; y < HEIGHT; y++) {
+		if (map[x][y] === ROOM) rooms.push({ x, y });
+	}
+}
+
+for (let i = 0; i < 11; i++) {
+	const randIndex = rand(rooms.length);
+	const { x, y } = rooms[randIndex];
+	rooms[randIndex] = rooms[rooms.length - 1];
+	rooms.pop();
+	map[x][y] = TREASURE;
+}
+
 for (let y = 0; y < HEIGHT; y++) {
 	let str = '';
 	for (let x = 0; x < WIDTH; x++) {
 		str += ({
 			[ROOM]: 8888,
 			[PORTAL]: '||||',
+			[TREASURE]: '====',
 		})[map[x][y]] || '    ';
 	}
 	console.log(str);
