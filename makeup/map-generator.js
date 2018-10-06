@@ -121,6 +121,8 @@ for (let i = 0; i < 11; i++) {
 	map[x][y] = TREASURE;
 }
 
+console.log(map);
+
 for (let y = 0; y < HEIGHT; y++) {
 	let str = '';
 	for (let x = 0; x < WIDTH; x++) {
