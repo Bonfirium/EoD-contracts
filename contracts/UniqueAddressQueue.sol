@@ -2,39 +2,36 @@ pragma solidity ^0.4.23;
 
 
 contract UniqueAddressQueue {
+    uint64 gameId = 1;
+    address [] data;
+	mapping (address => uint64) lastGameId;
 
-	mapping (address => bool) has;
-	mapping (uint64 => address) data;
-	uint64 front = 0;
-	uint64 back = 0;
-
-	function is_empty() public view returns (bool) {
-		return back == front;
+    function game_id() public view returns (uint64) {
+		return gameId;
 	}
 
-	function get_size() public view returns (uint64) {
-		return back - front;
+	function is_empty() public view returns (bool) {
+		return data.length == 0;
+	}
+
+	function get_size() public view returns (uint) {
+		return data.length;
 	}
 
 	function is_in_queue(address addr) public view returns (bool) {
-		return has[addr];
+		return lastGameId[addr] == gameId;
 	}
 
 	function push(address addr) public returns (uint64) {
-		require(!has[addr], "sender is already in queue");
-		has[addr] = true;
-		data[back] = addr;
-		back += 1;
-		return get_size();
-	}
-
-	function pop() public returns (address) {
-		require(!is_empty(), "queue is empty");
-		address result = data[front];
-		front += 1;
-		delete has[result];
-		delete data[front];
-		return result;
+		require(lastGameId[addr] == gameId, "sender is already in queue");
+		lastGameId[addr] = gameId;
+		data.push(addr);
+		if(data.length == 7) {
+			// create game
+		    delete data;
+		    gameId += 1;
+		}
+		return gameId;
 	}
 
 }
