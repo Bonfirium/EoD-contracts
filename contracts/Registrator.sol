@@ -5,17 +5,17 @@ contract Registrator {
 
 	mapping (address => bool) has;
 	mapping (address => uint24) balance;
-	
-	function balanceOf(address addr) public view returns (uint24) {
+
+	function balance_of(address addr) public view returns (uint24) {
 		return balance[addr];
 	}
-	
-	function incBalance(address addr, uint24 value) public returns (uint24) {
+
+	function inc_balance(address addr, uint24 value) public returns (uint24) {
 		balance[addr] += value;
 		return balance[addr];
 	}
-	
-	function decBalcance(address addr, uint24 value) public returns (uint24) {
+
+	function dec_balance(address addr, uint24 value) public returns (uint24) {
 		require(balance[addr] < value, "balance should be bigger or equal then zero");
 		balance[addr] -= value;
 		return balance[addr];
@@ -26,4 +26,5 @@ contract Registrator {
 		has[addr] = true;
 		balance[addr] = 10;
 	}
+
 }

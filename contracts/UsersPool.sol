@@ -19,19 +19,28 @@ contract UsersPool {
 		return data.length;
 	}
 
+	function is_full() public view returns (bool) {
+		return data.length == 8;
+	}
+
 	function is_in_pool(address addr) public view returns (bool) {
 		return last_game_id[addr] == next_game_id;
 	}
 
-	function push(address addr) public returns (uint64) {
+	function push(address addr) public returns () {
 		require(last_game_id[addr] == next_game_id, "sender is already in pool");
 		last_game_id[addr] = next_game_id;
 		data.push(addr);
-		if(data.length == 7) {
-			// create game
-		    delete data;
-		    next_game_id += 1;
-		}
+	}
+
+	function clear() public returns (address[]) {
+		address[] result = data;
+		next_game_id += 1;
+		delete data;
+		return result;
+	}
+
+	function get_next_game_id() public view returns (uint64) {
 		return next_game_id;
 	}
 

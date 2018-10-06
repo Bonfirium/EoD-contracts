@@ -17,11 +17,11 @@ contract Dungeon {
 	int8[12] D12_Y;
 
 	uint8[WIDTH][HEIGHT] map;
-	uint32 seed;
-	uint32 _generator;
+	uint256 seed;
+	uint256 _generator;
 	uint8 _randomIterator;
 
-	constructor(uint32 __seed) public {
+	constructor(uint256 __seed) public {
 		D8_X = [int8(1), 1, 0, -1, -1, -1, 0, 1];
 		D8_Y = [int8(0), -1, -1, -1, 0, 1, 1, 1];
 		D12_X = [int8(2), 2, 1, 0, -1, -2, -2, -2, -1, 0, 1, 2];
