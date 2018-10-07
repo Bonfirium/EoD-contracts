@@ -62,4 +62,3 @@ contract('EoD', (accounts) => {
 		});
 	});
 });
-

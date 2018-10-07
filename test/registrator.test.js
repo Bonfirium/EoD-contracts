@@ -4,7 +4,6 @@ const comprihansion = (size, map) => new Array(size).fill(0).map((_, index) => m
 const getRandomAddress = require('../utils/getRandomAddress');
 
 const Registrator = artifacts.require('Registrator');
-const EoD = artifacts.require('EoD');
 
 let self;
 
