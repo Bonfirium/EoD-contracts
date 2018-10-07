@@ -15,7 +15,7 @@ contract('EoD', (accounts) => {
 		it('successful on empty', async () => {
 			await self.registrate.call({ from: accounts[0] });
 		});
-		it('registrate', () => async () =>{
+		it('registrate', () => async () => {
 			await self.registrate({ from: accounts[0] })
 			await self.balance.call({ from: accounts[0] }).then((res) => ok(res.eq(10)))
 		});
@@ -33,30 +33,37 @@ contract('EoD', (accounts) => {
 		it('empty balance', async () => {
 			const addr = accounts[2];
 			const value = 10
-			await self.registrate( {from: addr} );
+			await self.registrate({ from: addr });
 			try {
 				await self.inc_balance(addr, value)
-			} catch(e) {
+			} catch (e) {
 				return
 			}
 			fail('Exception expected')
 		});
 		it('successful', async () => {
 			const addrs = comprihansion(8, (index) => accounts[3 + index]);
-			await Promise.all(addrs.slice(0, 7).map((addr) => self.find_game({ from: addr })));
+			await Promise.all(addrs.map((addr) => self.registrate({ from: addr })));
+			await Promise.all(addrs.slice(0, 7).map(async (addr) => {
+				const res = await self.find_game({ from: addr });
+				console.log(addr);
+				return res;
+			}));
+			console.log(1);
 			const game_id = await self.find_game.call({ from: addrs[7] });
+			console.log(game_id);
 			await self.find_game({ from: addrs[7] });
 			await self.find_game.call({ from: addrs[7] }).then((res) => ok(res.eq(game_id + 1)));
-		});	
+		});
 		//it('get_map(lobby_id)', () => {});	
 	});
 	describe('is_registred()', async () => {
 		it('true', async () => {
-			await self.is_registred.call({from: accounts[0] }).then((res) => eq(res, true));
+			await self.is_registred.call({ from: accounts[0] }).then((res) => eq(res, true));
 		});
 		it('false', async () => {
 			const addr = accounts[15]
-			await self.is_registred.call({from: addr}).then((res) => eq(res, false));
+			await self.is_registred.call({ from: addr }).then((res) => eq(res, false));
 		});
 	});
 });

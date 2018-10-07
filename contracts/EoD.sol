@@ -18,12 +18,16 @@ contract EoD {
 
     function find_game() public returns (uint64) {
         address addr = msg.sender;
-        require(registrator.balance_of(addr) == 0, "balance should be greater than 1 EoDT");
+        require(registrator.balance_of(addr) != 0, "balance should be greater than 1 EoDT");
         pool.push(addr);
         uint64 game_id = pool.get_next_game_id();
         if (!pool.is_full()) return game_id;
         lobbies[game_id] = new Lobby(game_id, pool.clear());
         return game_id;
+    }
+
+    function is_in_pool(address addr) public view returns (bool) {
+        return pool.is_in_pool(addr);
     }
 
     function balance() public view returns (uint24) {
