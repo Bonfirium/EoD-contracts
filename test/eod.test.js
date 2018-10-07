@@ -1,4 +1,4 @@
-const { fail } = require('assert');
+const { fail, ok } = require('assert');
 
 const comprihansion = (size, map) => new Array(size).fill(0).map((_, index) => map(index));
 const getRandomAddress = require('../utils/getRandomAddress');
@@ -30,7 +30,6 @@ contract('EoD', (accounts) => {
 		});
 	});
 	describe('find_game()', () => {
-		//1 баланс нулевой у игрока
 		it('empty balance', async () => {
 			const addr = accounts[2];
 			const value = 10
@@ -42,15 +41,14 @@ contract('EoD', (accounts) => {
 			}
 			fail('Exception expected')
 		});
-		//2 пул переполнен
 		it('successful', async () => {
 			const addrs = comprihansion(7, (index) => accounts[3 + index]);
 			await Promise.all(addrs.map((addr) => self.find_game({ from: addr })));
-			const game_id = self.find_game.call({ from: addrs[11] })
-			self.find_game({ from: addrs[11] })
-			await self.find_game.call({ from: addrs[12] }).then((res) => ok(res.eq(game_id + 1)));
+			const game_id = self.find_game.call({ from: addrs[0] })
+			self.find_game({ from: addrs[0] })
+			await self.find_game.call({ from: addrs[1] }).then((res) => ok(res.eq(game_id + 1)));
 		});	
-		it('get_map(lobby_id)', () => {});	
+		//it('get_map(lobby_id)', () => {});	
 	});
 	describe('is_registred()', async () => {
 		it('true', async () => {
