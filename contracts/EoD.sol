@@ -34,7 +34,7 @@ contract EoD {
         return lobbies[lobby_id].get_map();
     }
 
-    function get_game_status(uint64 lobby_id) public view returns (uint8[2]) {
+    function get_game_status(uint64 lobby_id) public view returns (uint8[2], uint8[16]) {
         return lobbies[lobby_id].get_status();
     }
     

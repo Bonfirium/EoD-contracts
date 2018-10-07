@@ -39,8 +39,20 @@ contract Lobby {
 		revert("Player not found");
 	}
 
-	function get_status() public view returns (uint8[2]) {
-		return [uint8(status), get_player_index(msg.sender)];
+	function get_status() public view returns (uint8[2], uint8[16]) {
+		return (
+			[uint8(status), get_player_index(msg.sender)],
+			[
+				uint8(humansPositions[0].x()), humansPositions[0].y(),
+				humansPositions[1].x(), humansPositions[1].y(),
+				humansPositions[2].x(), humansPositions[2].y(),
+				humansPositions[3].x(), humansPositions[3].y(),
+				monstersPositions[0].x(), monstersPositions[0].y(),
+				monstersPositions[1].x(), monstersPositions[1].y(),
+				monstersPositions[2].x(), monstersPositions[2].y(),
+				monstersPositions[3].x(), monstersPositions[3].y()
+			]
+		);
 	}
 
 }
