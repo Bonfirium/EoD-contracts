@@ -28,10 +28,7 @@ contract Dungeon {
 		D12_Y = [int8(0), -1, -2, -2, -2, -1, 0, 1, 2, 2, 2, 1];
 		seed = __seed;
 		_generator = seed;
-	}
-
-	function get_map() public pure returns (uint8[480]) {
-		return [
+		map = [
 			3, 3, 2, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 3, 4,
 			2, 3, 3, 3, 2, 3, 2, 3, 3, 3, 2, 3, 3, 3, 3, 3,
 			3, 3, 2, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 2, 3,
@@ -63,6 +60,10 @@ contract Dungeon {
 			3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 2, 3, 2, 3,
 			3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 5, 3, 3, 3, 3, 3
 		];
+	}
+
+	function get_map() public view returns (uint8[480]) {
+		return map;
 	}
 
 }
