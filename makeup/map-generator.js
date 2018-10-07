@@ -121,7 +121,16 @@ for (let i = 0; i < 11; i++) {
 	map[x][y] = TREASURE;
 }
 
+const monstersPositions = comprehension(4, () => {
+	const randIndex = rand(rooms.length);
+	const { x, y } = rooms[randIndex];
+	rooms[randIndex] = rooms[rooms.length - 1];
+	rooms.pop();
+	return { x, y };
+});
+
 console.log(map);
+console.log(monstersPositions);
 
 for (let y = 0; y < HEIGHT; y++) {
 	let str = '';

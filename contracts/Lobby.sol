@@ -16,6 +16,7 @@ contract Lobby {
 	uint8 status = NEW;
 	uint64 id;
 	address[] players;
+	bool[4] makedSteps;
 	uint256 inited_at;
 	Dungeon dungeon;
 	Point[4] humansPositions;
@@ -26,6 +27,10 @@ contract Lobby {
 		players = __players;
 		inited_at = block.number;
 		dungeon = new Dungeon(inited_at);
+		monstersPositions[0] = new Point(27, 9);
+		monstersPositions[1] = new Point(22, 0);
+		monstersPositions[2] = new Point(9, 8);
+		monstersPositions[3] = new Point(5, 2);
 	}
 
 	function get_map() public view returns (uint8[480]) {
@@ -39,8 +44,20 @@ contract Lobby {
 		revert("Player not found");
 	}
 
-	function get_status() public view returns (uint8[2]) {
-		return [uint8(status), get_player_index(msg.sender)];
+	function get_status() public view returns (uint8[2], uint8[16]) {
+		return (
+			[uint8(status), get_player_index(msg.sender)],
+			[
+				uint8(humansPositions[0].x()), humansPositions[0].y(),
+				humansPositions[1].x(), humansPositions[1].y(),
+				humansPositions[2].x(), humansPositions[2].y(),
+				humansPositions[3].x(), humansPositions[3].y(),
+				monstersPositions[0].x(), monstersPositions[0].y(),
+				monstersPositions[1].x(), monstersPositions[1].y(),
+				monstersPositions[2].x(), monstersPositions[2].y(),
+				monstersPositions[3].x(), monstersPositions[3].y()
+			]
+		);
 	}
 
 }
