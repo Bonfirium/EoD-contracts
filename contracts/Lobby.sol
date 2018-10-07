@@ -16,6 +16,7 @@ contract Lobby {
 	uint8 status = NEW;
 	uint64 id;
 	address[] players;
+	bool[4] makedSteps;
 	uint256 inited_at;
 	Dungeon dungeon;
 	Point[4] humansPositions;
@@ -26,6 +27,10 @@ contract Lobby {
 		players = __players;
 		inited_at = block.number;
 		dungeon = new Dungeon(inited_at);
+		monstersPositions[0] = new Point(27, 9);
+		monstersPositions[1] = new Point(22, 0);
+		monstersPositions[2] = new Point(9, 8);
+		monstersPositions[3] = new Point(5, 2);
 	}
 
 	function get_map() public view returns (uint8[480]) {
