@@ -16,7 +16,7 @@ contract EoD {
         registrator.registrate(msg.sender);
     }
 
-    function find_game() public returns(uint64) {
+    function find_game() public returns (uint64) {
         address addr = msg.sender;
         require(registrator.balance_of(addr) == 0, "balance should be greater than 1 EoDT");
         pool.push(addr);
@@ -25,13 +25,17 @@ contract EoD {
         lobbies[game_id] = new Lobby(game_id, pool.clear());
         return game_id;
     }
-    
+
     function balance() public view returns (uint24) {
         return registrator.balance_of(msg.sender);
     }
 
     function get_map(uint64 lobby_id) public view returns (uint8[480]) {
         return lobbies[lobby_id].get_map();
+    }
+
+    function get_game_status(uint64 lobby_id) public view returns (uint8[2]) {
+        return lobbies[lobby_id].get_status();
     }
     
     function is_registred() public view returns (bool) {

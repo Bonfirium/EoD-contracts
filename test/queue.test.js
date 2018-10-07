@@ -10,4 +10,9 @@ contract('UsersPool', (accounts) => {
 	before(async () => {
 		self = await UsersPool.deployed();
 	});
+	describe('qwe', () => {
+		it('asd', () => {
+			
+		})
+	});
 });
