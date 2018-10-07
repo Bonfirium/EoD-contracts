@@ -24,7 +24,7 @@ contract UsersPool {
 	}
 
 	function push(address addr) public {
-		require(last_game_id[addr] == next_game_id, "sender is already in pool");
+		require(last_game_id[addr] != next_game_id, "sender is already in pool");
 		last_game_id[addr] = next_game_id;
 		data.push(addr);
 	}

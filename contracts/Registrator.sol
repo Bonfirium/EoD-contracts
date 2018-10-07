@@ -6,6 +6,10 @@ contract Registrator {
 	mapping (address => bool) has;
 	mapping (address => uint24) balance;
 
+    function is_registred(address addr) public view returns (bool) {
+        return has[addr];
+    }
+    
 	function balance_of(address addr) public view returns (uint24) {
 		return balance[addr];
 	}
