@@ -44,9 +44,9 @@ contract('EoD', (accounts) => {
 		it('successful', async () => {
 			const addrs = comprihansion(7, (index) => accounts[3 + index]);
 			await Promise.all(addrs.map((addr) => self.find_game({ from: addr })));
-			const game_id = self.find_game.call({ from: addrs[0] })
-			self.find_game({ from: addrs[0] })
-			await self.find_game.call({ from: addrs[1] }).then((res) => ok(res.eq(game_id + 1)));
+			const game_id = await self.find_game.call({ from: addrs[13] })
+			await self.find_game({ from: addrs[13] })
+			await self.find_game.call({ from: addrs[14] }).then((res) => ok(res.eq(game_id + 1)));
 		});	
 		//it('get_map(lobby_id)', () => {});	
 	});
@@ -55,7 +55,7 @@ contract('EoD', (accounts) => {
 			await self.is_registred.call({from: accounts[0] }).then((res) => eq(res, true));
 		});
 		it('false', async () => {
-			const addr = accounts[13]
+			const addr = accounts[15]
 			await self.is_registred.call({from: addr}).then((res) => eq(res, false));
 		});
 	});
