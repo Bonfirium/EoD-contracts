@@ -11,7 +11,7 @@ contract Lobby {
 	uint256 inited_at;
 	Dungeon dungeon;
 
-	constructor(uint64 __id, address[] __players) {
+	constructor(uint64 __id, address[] __players) public {
 		id = __id;
 		players = __players;
 		inited_at = block.number;
