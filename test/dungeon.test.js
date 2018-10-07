@@ -6,7 +6,9 @@ contract('Dungeon', (accounts) => {
 	before(async () => {
 		self = await Dungeon.deployed();
 	});
-	describe('get_map()', async () => {
-		console.log(await self.get_map.call());
+	describe('get_map()', () => {
+		it('qwe', async function () {
+			const map = await self.get_map.call();
+		});
 	});
 });
