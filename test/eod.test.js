@@ -44,21 +44,21 @@ contract('EoD', (accounts) => {
 		});
 		//2 пул переполнен
 		it('successful', async () => {
-			const addrs = comprihansion(8, (index) => accounts[3 + index]);
+			const addrs = comprihansion(7, (index) => accounts[3 + index]);
 			await Promise.all(addrs.map((addr) => self.find_game({ from: addr })));
-			const game_id = self.get_game_id({ from: addrs[12] })
-			await self.find_game.call({ from: addrs[12] }).then((res) => ok(res.eq(game_id)));
+			const game_id = self.find_game.call({ from: addrs[11] })
+			self.find_game({ from: addrs[11] })
+			await self.find_game.call({ from: addrs[12] }).then((res) => ok(res.eq(game_id + 1)));
 		});	
 		it('get_map(lobby_id)', () => {});	
 	});
 	describe('is_registred()', async () => {
-		it('false', async () => {
-			await self.is_registred.call({from: accounts[0] }).then((res) => eq(res, false));
-		});
 		it('true', async () => {
-			const addr = accounts[0]
-			await self.registrate({ from: addr });
-			await self.is_registred.call({from: addr}).then((res) => eq(res, true));
+			await self.is_registred.call({from: accounts[0] }).then((res) => eq(res, true));
+		});
+		it('false', async () => {
+			const addr = accounts[13]
+			await self.is_registred.call({from: addr}).then((res) => eq(res, false));
 		});
 	});
 });
