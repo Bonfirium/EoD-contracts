@@ -42,11 +42,11 @@ contract('EoD', (accounts) => {
 			fail('Exception expected')
 		});
 		it('successful', async () => {
-			const addrs = comprihansion(7, (index) => accounts[3 + index]);
-			await Promise.all(addrs.map((addr) => self.find_game({ from: addr })));
-			const game_id = await self.find_game.call({ from: addrs[13] })
-			await self.find_game({ from: addrs[13] })
-			await self.find_game.call({ from: addrs[14] }).then((res) => ok(res.eq(game_id + 1)));
+			const addrs = comprihansion(8, (index) => accounts[3 + index]);
+			await Promise.all(addrs.slice(0, 7).map((addr) => self.find_game({ from: addr })));
+			const game_id = await self.find_game.call({ from: addrs[7] });
+			await self.find_game({ from: addrs[7] });
+			await self.find_game.call({ from: addrs[7] }).then((res) => ok(res.eq(game_id + 1)));
 		});	
 		//it('get_map(lobby_id)', () => {});	
 	});
