@@ -56,7 +56,7 @@ contract('EoD', (accounts) => {
 			await self.is_registred().call({from: accounts[0] }).then((res) => eq(res, false));
 		});
 		it('true', async () => {
-			const addr =  getRandomAddress()
+			const addr = accounts[0]
 			await self.registrate({ from: addr });
 			await self.is_registred().call({from: addr}).then((res) => eq(res, true));
 		});
