@@ -46,7 +46,8 @@ contract('EoD', (accounts) => {
 		it('successful', async () => {
 			const addrs = comprihansion(7, (index) => accounts[3 + index]);
 			await Promise.all(addrs.map((addr) => self.find_game({ from: addr })));
-			const game_id = self.find_game({ from: addrs[11] })
+			const game_id = self.find_game.call({ from: addrs[11] })
+			self.find_game({ from: addrs[11] })
 			await self.find_game.call({ from: addrs[12] }).then((res) => ok(res.eq(game_id + 1)));
 		});	
 		it('get_map(lobby_id)', () => {});	
