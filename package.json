@@ -22,5 +22,8 @@
 		"bignumber.js": "^7.2.1",
 		"ethereumjs-testrpc": "^6.0.3",
 		"truffle": "^4.1.14"
+	},
+	"dependencies": {
+		"sha256": "^0.2.0"
 	}
 }

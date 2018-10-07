@@ -22,11 +22,10 @@ contract EoD {
         pool.push(addr);
         if (!pool.is_full()) return;
         uint64 game_id = pool.get_next_game_id();
-        address[] players = pool.clear();
-        lobbies[game_id] = new Lobby(game_id, players);
+        lobbies[game_id] = new Lobby(game_id, pool.clear());
     }
 
-    function get_map(uint64 lobby_id) public view returns (uint8[16][30]) {
+    function get_map(uint64 lobby_id) public view returns (uint8[480]) {
         return lobbies[lobby_id].get_map();
     }
 

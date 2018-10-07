@@ -18,7 +18,7 @@ contract Lobby {
 		dungeon = new Dungeon(inited_at);
 	}
 
-	function get_map() public view returns (uint8[16][30]) {
+	function get_map() public view returns (uint8[480]) {
 		return dungeon.get_map();
 	}
 
