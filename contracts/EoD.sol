@@ -36,6 +36,7 @@ contract EoD {
 		uint16 dungeon_id;
 		address[PLAYERS_COUNT] players;
 		mapping(address => bool) moved;
+		bool[CHESTS_COUNT] chest_is_catched;
 		uint16[MONSTERS_COUNT] monsters_positions;
 		uint16[HUMANS_COUNT] humans_positions;
 	}
@@ -107,19 +108,31 @@ contract EoD {
 		return result;
 	}
 
-	function get_game_state(uint24 game_id) public view returns (
-		uint16 dungeon_id,
-		uint16[MONSTERS_COUNT] monsters_positions,
-		uint16[HUMANS_COUNT] humans_positions
+	function get_static_game_date(uint24 game_id) public view returns (
+		uint16[] rooms_positions,
+		uint16[MONSTERS_COUNT] monsters_start_positions,
+		uint16[CHESTS_COUNT] chests_positions,
+		address[PLAYERS_COUNT] players
 	) {
 		Game memory game = games[game_id];
-		dungeon_id = game.dungeon_id;
-		monsters_positions = game.monsters_positions;
-		humans_positions = game.humans_positions;
+		Dungeon memory dungeon = dungeons[game.dungeon_id];
+		rooms_positions = dungeon.rooms_positions;
+		monsters_start_positions = dungeon.monsters_start_positions;
+		chests_positions = dungeon.chests_positions;
+		players = game.players;
 	}
 
-	function get_dungeon(uint16 dungeon_id) public view returns (uint16[] rooms_positions) {
-		return dungeons[dungeon_id].rooms_positions;
+	function get_game_state(uint24 game_id) public view returns (
+		uint8 state,
+		uint16[MONSTERS_COUNT] monsters_positions,
+		uint16[HUMANS_COUNT] humans_positions,
+		bool[CHESTS_COUNT] chest_is_catched
+	) {
+		Game memory game = games[game_id];
+		state = uint8(game.state);
+		monsters_positions = game.monsters_positions;
+		humans_positions = game.humans_positions;
+		chest_is_catched = game.chest_is_catched;
 	}
 
 	function get_player_index(Game storage game, address player) private view returns (uint8) {
