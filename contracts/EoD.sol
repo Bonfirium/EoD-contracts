@@ -82,6 +82,10 @@ contract EoD {
 		add_dungeon(rooms_positions, monsters_positions, chests_positions);
 	}
 
+	function get_next_game_id() public view returns (uint24) {
+		return next_game_id;
+	}
+
 	function find_game() public returns (uint24) {
 		Game storage game = games[next_game_id];
 		require(!game.is_in_game[msg.sender], "already in queue");
