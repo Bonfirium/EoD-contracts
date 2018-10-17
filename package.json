@@ -20,6 +20,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"bignumber.js": "^7.2.1",
+		"eth-gas-reporter": "^0.1.12",
 		"ethereumjs-testrpc": "^6.0.3",
 		"truffle": "^4.1.14"
 	},

@@ -1,7 +1,7 @@
 pragma solidity ^0.4.23;
 
 
-contract EoD {
+contract EchoOfTheDungeon {
 
 	uint8 constant MONSTERS_COUNT = 1;
 	uint8 constant HUMANS_COUNT = 1;
@@ -22,20 +22,10 @@ contract EoD {
 		uint16[CHESTS_COUNT] chests_positions;
 	}
 
-	enum GAME_STATE {
-		NEW,
-		MONSTERS,
-		HUMANS,
-		MONSTERS_VICTORY,
-		HUMANS_VICTORY
-	}
-
 	struct Game {
 		mapping(address => bool) is_in_game;
-		GAME_STATE state;
 		uint16 dungeon_id;
 		address[PLAYERS_COUNT] players;
-		mapping(address => bool) moved;
 		uint16[MONSTERS_COUNT] monsters_positions;
 		uint16[HUMANS_COUNT] humans_positions;
 	}
@@ -116,85 +106,6 @@ contract EoD {
 
 	function get_dungeon(uint16 dungeon_id) public view returns (uint16[] rooms_positions) {
 		return dungeons[dungeon_id].rooms_positions;
-	}
-
-	function get_player_index(Game storage game, address player) private view returns (uint8) {
-		require(game.is_in_game[player], "player is not connected to this game");
-		for (uint8 i = 0; i < PLAYERS_COUNT; i++) {
-			if (game.players[i] == player) return i;
-		}
-		revert("not able to get player index");
-	}
-
-	function abs_int8(int8 a) private pure returns (uint8) {
-		if (a < 0) return uint8(-a);
-		return uint8(a);
-	}
-
-	function check_dif(uint8 x_dif, uint8 y_dif) private pure returns (bool) {
-		if (x_dif == 0 && y_dif == 2) return true;
-		if (x_dif == 2 && y_dif == 0) return true;
-		if (x_dif == 1 && y_dif == 2) return true;
-		if (x_dif == 2 && y_dif == 1) return true;
-		return false;
-	}
-
-	function is_near(uint16 from, uint16 pos) private pure returns (bool) {
-		uint8 current_pos_x = uint8(from % MAP_WIDTH);
-		uint8 current_pos_y = uint8(from / MAP_WIDTH);
-		uint8 new_pos_x = uint8(pos % MAP_WIDTH);
-		uint8 new_pos_y = uint8(pos / MAP_WIDTH);
-		uint8 x_dif = abs_int8(int8(current_pos_x - new_pos_x));
-		uint8 y_dif = abs_int8(int8(current_pos_y - new_pos_y));
-		return check_dif(x_dif, y_dif);
-	}
-
-	function move(uint24 game_id, uint16 pos) public {
-		require(pos < CELLS_COUNT, "this cell is outside of dungeon");
-		Game storage game = games[game_id];
-		Dungeon storage dungeon = dungeons[game.dungeon_id];
-		require(dungeon.is_room[pos], "this cell is wall");
-		uint8 player_index = get_player_index(game, msg.sender);
-		bool is_monster = player_index < MONSTERS_COUNT;
-		uint8 pos_index = is_monster ? player_index : player_index - MONSTERS_COUNT;
-		bool end_of_step = true;
-		uint8 i;
-		if (game.state == GAME_STATE.NEW) {
-			require(!game.moved[player_index], "start-position is already set");
-			game.humans_positions[pos_index] = pos;
-			game.moved[player_index] = true;
-			for (i = MONSTERS_COUNT; i < PLAYERS_COUNT; i++) {
-				if (!game.moved[i]) {
-					end_of_step = false;
-					break;
-				}
-			}
-			if (end_of_step) game.state = GAME_STATE.MONSTERS;
-			return;
-		}
-		require(game.state == (is_monster ? GAME_STATE.MONSTERS : GAME_STATE.HUMANS), "it is not your turn");
-		require(!game.moved[msg.sender], "you was moved this turn");
-		uint16 current_pos = is_monster ? game.monsters_positions[pos_index] : game.humans_positions[pos_index];
-		require(is_near(current_pos, pos), "can not move to this position");
-		if (is_monster) {
-			game.monsters_positions[pos_index] = pos;
-			for (i = 0; i < MONSTERS_COUNT; i++) {
-				if (!game.moved[i]) {
-					end_of_step = false;
-					break;
-				}
-			}
-			if (end_of_step) game.state = GAME_STATE.HUMANS;
-		} else {
-			game.humans_positions[pos_index] = pos;
-			for (i = MONSTERS_COUNT; i < PLAYERS_COUNT; i++) {
-				if (!game.moved[i]) {
-					end_of_step = false;
-					break;
-				}
-			}
-			if (end_of_step) game.state = GAME_STATE.MONSTERS;
-		}
 	}
 
 	function add_dungeon(
