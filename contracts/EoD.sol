@@ -136,6 +136,7 @@ contract EoD {
 		if (x_dif == 2 && y_dif == 0) return true;
 		if (x_dif == 1 && y_dif == 2) return true;
 		if (x_dif == 2 && y_dif == 1) return true;
+		if (x_dif == 0 && y_dif == 0) return true;
 		return false;
 	}
 
