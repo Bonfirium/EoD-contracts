@@ -35,7 +35,7 @@ contract EoD {
 		GAME_STATE state;
 		uint16 dungeon_id;
 		address[PLAYERS_COUNT] players;
-		mapping(address => bool) moved;
+		bool[PLAYERS_COUNT] moved;
 		bool[CHESTS_COUNT] chest_is_catched;
 		uint16[MONSTERS_COUNT] monsters_positions;
 		uint16[HUMANS_COUNT] humans_positions;
@@ -188,31 +188,42 @@ contract EoD {
 					break;
 				}
 			}
-			if (end_of_step) game.state = GAME_STATE.MONSTERS;
+			if (end_of_step) {
+			    game.state = GAME_STATE.MONSTERS;
+			    delete game.moved;
+			}
 			return;
 		}
 		require(game.state == (is_monster ? GAME_STATE.MONSTERS : GAME_STATE.HUMANS), "it is not your turn");
-		require(!game.moved[msg.sender], "you was moved this turn");
+		require(!game.moved[player_index], "you was moved this turn");
 		uint16 current_pos = is_monster ? game.monsters_positions[pos_index] : game.humans_positions[pos_index];
 		require(is_near(current_pos, pos), "can not move to this position");
 		if (is_monster) {
 			game.monsters_positions[pos_index] = pos;
+			game.moved[player_index] = true;
 			for (i = 0; i < MONSTERS_COUNT; i++) {
 				if (!game.moved[i]) {
 					end_of_step = false;
 					break;
 				}
 			}
-			if (end_of_step) game.state = GAME_STATE.HUMANS;
+			if (end_of_step) {
+			    game.state = GAME_STATE.HUMANS;
+			    delete game.moved;
+			}
 		} else {
 			game.humans_positions[pos_index] = pos;
+			game.moved[player_index] = true;
 			for (i = MONSTERS_COUNT; i < PLAYERS_COUNT; i++) {
 				if (!game.moved[i]) {
 					end_of_step = false;
 					break;
 				}
 			}
-			if (end_of_step) game.state = GAME_STATE.MONSTERS;
+			if (end_of_step) {
+			    game.state = GAME_STATE.MONSTERS;
+			    delete game.moved;
+			}
 		}
 	}
 
