@@ -179,6 +179,7 @@ contract EoD {
 		uint8 i;
 		if (game.state == GAME_STATE.NEW) {
 			require(!game.moved[player_index], "start-position is already set");
+			require(!is_monster, "first turn only for humans");
 			game.humans_positions[pos_index] = pos;
 			game.moved[player_index] = true;
 			for (i = MONSTERS_COUNT; i < PLAYERS_COUNT; i++) {
